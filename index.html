@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NE-2 분석지 | 에듀케레 영수학원</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243258;
+    --gold: #c8a84b;
+    --gold-light: #f0e0a0;
+    --cream: #faf8f2;
+    --white: #ffffff;
+    --gray-light: #f4f4f6;
+    --gray-mid: #e0e0e8;
+    --gray-text: #555566;
+    --green-bg: #e8f5e9;
+    --green-dark: #2e7d32;
+    --red: #c62828;
+    --correct: #2e7d32;
+    --wrong: #c62828;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-header .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .site-header .brand span {
+    font-size: 0.78rem;
+    color: #aab4cc;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    display: block;
+    margin-top: 2px;
+  }
+  .site-header .doc-id {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 65px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--navy-light);
+    padding: 24px 0;
+    position: sticky;
+    top: 65px;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
+    border-right: 1px solid rgba(200,168,75,0.2);
+  }
+  .sidebar-title {
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0 20px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 12px;
+  }
+  .tab-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #99aac4;
+    padding: 12px 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+  .tab-btn.active {
+    background: rgba(200,168,75,0.12);
+    color: var(--gold);
+    border-left-color: var(--gold);
+    font-weight: 500;
+  }
+  .tab-btn .tab-num {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-right: 6px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    padding: 36px 40px;
+    max-width: 900px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .sec-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .sec-subtitle {
+    font-size: 0.78rem;
+    color: var(--gray-text);
+    margin-top: 3px;
+  }
+
+  /* ── 전문 (FULL TEXT) ── */
+  .full-text-box {
+    background: var(--white);
+    border: 2px solid var(--navy);
+    border-left: 6px solid var(--gold);
+    border-radius: 4px;
+    padding: 28px 32px;
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    line-height: 1.85;
+    color: #1a1a2e;
+  }
+  .full-text-box .speaker {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .full-text-box p { margin-bottom: 10px; }
+  .full-text-box p:last-child { margin-bottom: 0; }
+
+  /* ── 문장분석 ── */
+  .sentence-block {
+    margin-bottom: 28px;
+    border: 1px solid var(--gray-mid);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .sentence-num-bar {
+    background: var(--navy);
+    color: var(--white);
+    padding: 7px 16px;
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sentence-eng {
+    background: var(--white);
+    border-left: 5px solid #2E75B6;
+    padding: 14px 18px;
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a1a2e;
+    margin: 12px 14px 0;
+    border-radius: 2px;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+  }
+  .slash-reading {
+    padding: 10px 18px 4px;
+    font-size: 0.82rem;
+    color: var(--navy);
+    font-style: italic;
+    margin: 0 14px;
+  }
+  .slash-kr {
+    padding: 2px 18px 12px;
+    font-size: 0.82rem;
+    color: var(--gray-text);
+    margin: 0 14px;
+    border-bottom: 1px dashed var(--gray-mid);
+  }
+  .grammar-bullets {
+    padding: 12px 18px 14px;
+    margin: 0 14px 14px;
+  }
+  .grammar-item {
+    background: #FFF8E1;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 7px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #5D4037;
+    border-left: 3px solid #c8a84b;
+  }
+  .grammar-item:last-child { margin-bottom: 0; }
+  .grammar-item strong { color: #7F6000; }
+
+  /* ── 핵심단어 ── */
+  .vocab-item {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 11px 16px;
+    border-radius: 5px;
+    margin-bottom: 7px;
+    background: #E8F5E9;
+    border-left: 4px solid #375623;
+    flex-wrap: wrap;
+  }
+  .vocab-word {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1B5E20;
+    min-width: 150px;
+  }
+  .vocab-kr { color: #2e7d32; font-size: 0.88rem; min-width: 120px; }
+  .vocab-pos {
+    font-size: 0.78rem;
+    color: #555;
+    font-style: italic;
+    min-width: 50px;
+  }
+  .vocab-deriv { font-size: 0.78rem; color: #777; }
+
+  /* ── 전문해석 ── */
+  .translation-box {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-left: 5px solid var(--navy);
+    border-radius: 4px;
+    padding: 24px 28px;
+    font-size: 0.95rem;
+    line-height: 2;
+    color: #222244;
+  }
+  .translation-box p { margin-bottom: 10px; }
+
+  /* ── 주제와 요지 ── */
+  .topic-card {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .topic-card-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .topic-card-body {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--navy);
+  }
+  .structure-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .step-badge {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ── 변형문제 ── */
+  .quiz-block {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+  }
+  .quiz-q {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.65;
+  }
+  .quiz-q .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-right: 6px;
+  }
+  .quiz-type-badge {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.68rem;
+    padding: 2px 9px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+  }
+  .options { margin-bottom: 14px; }
+  .option-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    border-radius: 5px;
+    padding: 10px 14px;
+    margin-bottom: 7px;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--navy);
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) { background: #e8eaf0; border-color: var(--navy); }
+  .option-btn.correct { background: #e8f5e9; border-color: var(--correct); color: var(--correct); font-weight: 600; }
+  .option-btn.wrong { background: #ffebee; border-color: var(--wrong); color: var(--wrong); }
+  .option-btn.reveal-correct { background: #e8f5e9; border-color: var(--correct); color: var(--correct); font-weight: 600; }
+  .option-btn:disabled { cursor: default; }
+  .feedback {
+    display: none;
+    font-size: 0.83rem;
+    padding: 9px 14px;
+    border-radius: 5px;
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #e8f5e9; color: var(--correct); border-left: 3px solid var(--correct); }
+  .feedback.wrong { background: #ffebee; color: var(--wrong); border-left: 3px solid var(--wrong); }
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--gray-mid);
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* ── 서술형 ── */
+  .essay-block {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+  }
+  .essay-q {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.7;
+  }
+  .essay-condition {
+    font-size: 0.8rem;
+    color: #777;
+    background: var(--gray-light);
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-bottom: 14px;
+    border-left: 3px solid var(--gold);
+  }
+  .essay-textarea {
+    width: 100%;
+    border: 1px solid var(--gray-mid);
+    border-radius: 5px;
+    padding: 12px 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--navy);
+    resize: vertical;
+    min-height: 90px;
+    background: #fafafa;
+    transition: border 0.15s;
+  }
+  .essay-textarea:focus { outline: none; border-color: var(--navy); background: var(--white); }
+  .show-answer-btn {
+    margin-top: 10px;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 18px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: opacity 0.15s;
+  }
+  .show-answer-btn:hover { opacity: 0.85; }
+  .model-answer {
+    display: none;
+    margin-top: 12px;
+    background: #e3f2fd;
+    border-left: 4px solid #1565c0;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #0d3a6e;
+  }
+  .model-answer.show { display: block; }
+  .model-answer-title {
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: #1565c0;
+    margin-bottom: 6px;
+  }
+
+  /* underline blank */
+  .blank { display: inline-block; border-bottom: 2px solid var(--navy); width: 80px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(26,39,68,0.25); border-radius: 3px; }
+
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; display: flex; flex-wrap: wrap; padding: 8px; }
+    .tab-btn { width: auto; padding: 8px 14px; font-size: 0.8rem; }
+    .main { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    Educere English &amp; Math Academy
+    <span>에듀케레 영수학원 | 영어 분석지</span>
+  </div>
+  <div class="doc-id">NE-2</div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">분석 목차</div>
+    <button class="tab-btn active" onclick="showTab('s0')"><span class="tab-num">01</span> 전문</button>
+    <button class="tab-btn" onclick="showTab('s1')"><span class="tab-num">02</span> 문장분석</button>
+    <button class="tab-btn" onclick="showTab('s2')"><span class="tab-num">03</span> 핵심단어 및 표현</button>
+    <button class="tab-btn" onclick="showTab('s3')"><span class="tab-num">04</span> 전문해석</button>
+    <button class="tab-btn" onclick="showTab('s4')"><span class="tab-num">05</span> 주제와 요지</button>
+    <button class="tab-btn" onclick="showTab('s5')"><span class="tab-num">06</span> 변형문제</button>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ① 전문 -->
+    <section id="s0" class="section active">
+      <div class="sec-header">
+        <div class="sec-num">01</div>
+        <div>
+          <div class="sec-title">전문 (Full Text)</div>
+          <div class="sec-subtitle">Wake Up Your Lazy Brain! — NE 지문 3편</div>
+        </div>
+      </div>
+      <div class="full-text-box">
+        <p><span class="speaker">Host:</span> Hello, everyone! Welcome to Science Report. I'm your host, Alvin Stuart. We all know how important it is for us to exercise our bodies. But what about our brains? Did you know that it's important to work out your mind, too? Dr. Caitlin Yoon, a professor of neuroscience at Central University, is here with us today to talk about how we can become better thinkers. Thank you for joining us, Dr. Yoon!</p>
+        <p><span class="speaker">Doctor:</span> Thank you for having me.</p>
+        <p><span class="speaker">Host:</span> Doctor, what is the secret to becoming a better thinker?</p>
+        <p><span class="speaker">Doctor:</span> Well, I want to begin by asking the audience a question. Suppose you go into a store to purchase a notebook and a pen. The total price is $1.10, and the notebook costs $1 more than the pen. What is the price of the pen? Raise your hand if "$0.10" was the first thing that came to mind.</p>
+        <p><span class="speaker">Host:</span> That's what popped into my head.</p>
+        <p><span class="speaker">Doctor:</span> The correct answer is "$0.05." Now, think again. Do you see the error in your calculation? If the price of the pen was $0.10, then the notebook would cost $1.10. That would make the total price $1.20.</p>
+        <p><span class="speaker">Host:</span> It seems like an easy question now.</p>
+        <p><span class="speaker">Doctor:</span> If you pause, take your time, and carefully think about it, you will realize your mistake. This simple question reveals the fundamental way that our brains work. They actually have two different systems that they can utilize: System 1 and System 2. System 1 is based on instinct, and it works without our conscious control. Our brains naturally apply this system in countless everyday situations, such as when we hear simple sentences, see large words on advertisements, or encounter easy questions like "2+2=?". This system works very quickly, because it needs to continuously process enormous amounts of information coming in through our senses. If you initially came up with the answer "$0.10" to the question I asked earlier, that was the automatic response of System 1.</p>
+        <p><span class="speaker">Host:</span> That is fascinating! So if System 1 produces these rapid, automatic responses to situations we regularly encounter in daily life, what is the role of System 2?</p>
+        <p><span class="speaker">Doctor:</span> System 2 is responsible for our reasoning and deeper decision-making processes. Our brains use this system when we compare the prices and features of products, check the validity of an argument, or encounter difficult questions like "238×79×451=?". It controls conscious mental activities when we need to focus or make careful choices. However, while System 2 is more reliable, its application requires time and effort. If you got the right answer to the notebook and pen question after taking a few seconds to reflect, then your brain used System 2 to check System 1's initial response. However, our brains tend to rely heavily on taking mental shortcuts with System 1. That is why it's common for people to answer the question incorrectly at first.</p>
+        <p><span class="speaker">Host:</span> So, Doctor, why do we rely on these mental shortcuts when System 1 is not as dependable as System 2?</p>
+        <p><span class="speaker">Doctor:</span> Well, we make about 35,000 decisions every day without realizing it, and it is impossible to make every one of these consciously. So it's quite reasonable and effective for the brain to be a bit lazy sometimes. Having a lazy brain allows us to save energy for critical tasks that require our focus and attention. However, it is dangerous when this becomes a habit. If your brain becomes too reliant on System 1, it will not be able to apply System 2 when you confront a problem that requires intense concentration. System 2 is essential for exercising human intelligence, so the less you use it, the more likely you are to become a lazy thinker. Those who have an overly lazy brain frequently make errors and bad decisions. They can also develop a habit of accepting things to be true even though they have never been proven. Therefore, it can be harmful to develop lazy brain habits.</p>
+        <p><span class="speaker">Host:</span> So how can we resist these lazy brain habits?</p>
+        <p><span class="speaker">Doctor:</span> We can make a deliberate effort to practice thinking deeply with System 2 more often. Here are some tips: First, reconsider your initial thoughts instead of accepting them right away. Keep generating more ideas and carefully compare the available options before making a decision. Ask yourself if the information you have gathered supports your original conclusion. If not, then think again. Next, make use of your natural curiosity. Curiosity can motivate us to investigate unfamiliar topics and ideas. It encourages us to dive deeper into a subject and explore it from multiple angles. Therefore, it can serve as a foundation for building deeper thinking habits. Finally, learn something new in order to stimulate your brain and become more intelligent. Learning a language or a musical instrument might not be easy, but these new activities will create new paths that allow information to flow through your brain more efficiently.</p>
+        <p><span class="speaker">Host:</span> That sounds like excellent advice, Doctor. Do you have any final words for our audience?</p>
+        <p><span class="speaker">Doctor:</span> Yes. We are creatures of habit, so it is vitally important that we develop well-balanced thinking habits. We should remain alert so that we do not fall into the trap of making careless decisions. We should invest time into learning how to think deeply in order to use both System 1 and System 2 harmoniously. That way, instead of developing a habit of relying too much on a lazy brain, you can exercise your intelligence and reinforce your mental capabilities.</p>
+        <p><span class="speaker">Host:</span> Okay, Dr. Yoon. Thanks for the great advice! Please give her a big hand!</p>
+      </div>
+    </section>
+
+    <!-- ② 문장분석 -->
+    <section id="s1" class="section">
+      <div class="sec-header">
+        <div class="sec-num">02</div>
+        <div>
+          <div class="sec-title">문장분석</div>
+          <div class="sec-subtitle">직독직해 + 문법 포인트</div>
+        </div>
+      </div>
+
+      <!-- S1 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">① Host 도입</div>
+        <div class="sentence-eng">Hello, everyone! Welcome to Science Report. I'm your host, Alvin Stuart.</div>
+        <div class="slash-reading">Hello, everyone! / Welcome / to Science Report. / I'm / your host, / Alvin Stuart.</div>
+        <div class="slash-kr">안녕하세요, 여러분! / 오신 것을 환영합니다 / '사이언스 리포트'에. / 저는 / 여러분의 진행자, / Alvin Stuart입니다.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 명령문 (Imperative)</strong> ▶ "Welcome to Science Report" — 주어 없이 동사원형으로 시작 ★ 명령문·청유문 구분 출제</div>
+          <div class="grammar-item"><strong>◆ 동격 (Appositive)</strong> ▶ "your host, Alvin Stuart" — 콤마로 연결된 명사가 앞 명사 보충 ★ 동격 콤마 vs. 관계사절 구별</div>
+        </div>
+      </div>
+
+      <!-- S2 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">②</div>
+        <div class="sentence-eng">We all know how important it is for us to exercise our bodies.</div>
+        <div class="slash-reading">We all know / how important / it is / for us / to exercise our bodies.</div>
+        <div class="slash-kr">우리는 모두 안다 / 얼마나 중요한지를 / 그것이 / 우리에게 / 우리의 몸을 운동시키는 것이.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 간접의문문 (Indirect Question)</strong> ▶ "know how important it is" — 의문사+주어+동사 어순 ★ 직접의문문과 어순 혼동 오답 빈출</div>
+          <div class="grammar-item"><strong>◆ 가주어-진주어 (It ~ to V)</strong> ▶ "it is … for us to exercise" — it이 형식주어, to부정사가 진주어 ★ for+목적격 의미상 주어</div>
+        </div>
+      </div>
+
+      <!-- S3 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">③</div>
+        <div class="sentence-eng">But what about our brains? Did you know that it's important to work out your mind, too?</div>
+        <div class="slash-reading">But / what about our brains? / Did you know / that it's important / to work out your mind, too?</div>
+        <div class="slash-kr">그런데 / 우리의 뇌는 어떻습니까? / 알고 있었나요 / 그것이 중요하다는 것을 / 마음도 단련하는 것이?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 수사의문문 (Rhetorical Question)</strong> ▶ "But what about our brains?" — 답을 요구하지 않고 강조 효과 ★ 담화 기능 파악 문제</div>
+          <div class="grammar-item"><strong>◆ that절 목적어</strong> ▶ "know that it's important to work out" — 동사 뒤 명사절 목적어 ★ that 생략 여부 판단</div>
+        </div>
+      </div>
+
+      <!-- S4 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">④</div>
+        <div class="sentence-eng">Dr. Caitlin Yoon, a professor of neuroscience at Central University, is here with us today to talk about how we can become better thinkers.</div>
+        <div class="slash-reading">Dr. Caitlin Yoon, / a professor of neuroscience / at Central University, / is here with us today / to talk about / how we can become better thinkers.</div>
+        <div class="slash-kr">Dr. Caitlin Yoon, / 신경과학 교수 / Central University의, / 오늘 저희와 함께 이 자리에 있습니다 / 이야기하기 위해 / 우리가 어떻게 더 나은 사상가가 될 수 있는지에 대해.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 동격 삽입구</strong> ▶ "a professor of neuroscience at Central University" — 콤마 사이 삽입 ★ 주어·동사 수 일치에 혼동 주는 출제 포인트</div>
+          <div class="grammar-item"><strong>◆ to부정사 부사적 용법 (목적)</strong> ▶ "is here … to talk about" — '~하기 위해' ★ 목적·결과·원인 용법 구별</div>
+          <div class="grammar-item"><strong>◆ 간접의문문</strong> ▶ "how we can become better thinkers" — 어순 주의 ★ 수능 어법 단골 포인트</div>
+        </div>
+      </div>
+
+      <!-- S5 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑤ Doctor 첫 답변</div>
+        <div class="sentence-eng">Well, I want to begin by asking the audience a question.</div>
+        <div class="slash-reading">Well, / I want / to begin / by asking / the audience / a question.</div>
+        <div class="slash-kr">자, / 저는 원합니다 / 시작하기를 / 묻는 것으로 / 청중에게 / 한 가지 질문을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 전치사+동명사 (by -ing)</strong> ▶ "begin by asking" — 수단·방법의 by ★ 동명사 vs. to부정사 목적어 구별</div>
+          <div class="grammar-item"><strong>◆ 수여동사 (SVOO)</strong> ▶ "asking the audience a question" — 간접목적어+직접목적어 ★ 능·수동 전환 시 목적어 처리</div>
+        </div>
+      </div>
+
+      <!-- S6 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑥</div>
+        <div class="sentence-eng">Suppose you go into a store to purchase a notebook and a pen.</div>
+        <div class="slash-reading">Suppose / you go into a store / to purchase / a notebook and a pen.</div>
+        <div class="slash-kr">가정해 보세요 / 당신이 가게에 들어간다고 / 구매하러 / 공책과 펜을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ Suppose + that절 (조건 접속사)</strong> ▶ "Suppose you go" — 가정의 조건절 도입 ★ if / suppose / assuming 혼용 구별</div>
+          <div class="grammar-item"><strong>◆ to부정사 목적</strong> ▶ "to purchase a notebook and a pen" — 목적 부사절 ★ in order to와 교체 가능</div>
+        </div>
+      </div>
+
+      <!-- S7 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑦</div>
+        <div class="sentence-eng">The total price is $1.10, and the notebook costs $1 more than the pen.</div>
+        <div class="slash-reading">The total price / is $1.10, / and the notebook / costs / $1 more than the pen.</div>
+        <div class="slash-kr">총 가격은 / $1.10이고, / 공책은 / 가격이 / 펜보다 $1 더 비쌉니다.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 비교 구문 (비교급+than)</strong> ▶ "costs $1 more than the pen" — 수량 차이 표현 ★ 비교급 강조 부사(much/even/far) 자리 혼동</div>
+        </div>
+      </div>
+
+      <!-- S8 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑧</div>
+        <div class="sentence-eng">What is the price of the pen? Raise your hand if "$0.10" was the first thing that came to mind.</div>
+        <div class="slash-reading">What is / the price of the pen? / Raise your hand / if "$0.10" / was the first thing / that came to mind.</div>
+        <div class="slash-kr">무엇입니까 / 펜의 가격이? / 손을 드세요 / "$0.10"이 / 처음 떠오른 것이었다면 / 마음속에.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 관계대명사 that (선행사 수식)</strong> ▶ "the first thing that came to mind" — thing 수식 ★ that과 which 용법 차이</div>
+          <div class="grammar-item"><strong>◆ 명령문 (조건의 if 병용)</strong> ▶ "Raise your hand if … was" — 조건절 결합 ★ 조건 if vs. 명사절 if</div>
+        </div>
+      </div>
+
+      <!-- S9 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑨ Host 반응</div>
+        <div class="sentence-eng">That's what popped into my head.</div>
+        <div class="slash-reading">That's / what / popped into my head.</div>
+        <div class="slash-kr">그것이 / 바로 / 제 머릿속에 떠오른 것입니다.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 관계대명사 what (선행사 포함)</strong> ▶ "what popped into my head" — 선행사 포함, the thing which로 바꿀 수 있음 ★ that과 what 구별 출제</div>
+        </div>
+      </div>
+
+      <!-- S10 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑩ Doctor 정답 설명</div>
+        <div class="sentence-eng">The correct answer is "$0.05."</div>
+        <div class="slash-reading">The correct answer / is / "$0.05."</div>
+        <div class="slash-kr">정답은 / ~입니다 / "$0.05."</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 주격보어 (SVC 구조)</strong> ▶ "The correct answer is '$0.05'" — 명사가 보어 역할 ★ be동사 앞뒤 명사 혼동</div>
+        </div>
+      </div>
+
+      <!-- S11 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑪</div>
+        <div class="sentence-eng">Now, think again. Do you see the error in your calculation?</div>
+        <div class="slash-reading">Now, / think again. / Do you see / the error / in your calculation?</div>
+        <div class="slash-kr">이제, / 다시 생각해 보세요. / 보이시나요 / 오류가 / 당신의 계산에서?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 명령문 + 의문문 연속</strong> ▶ 담화 기능: 청자의 주의 환기 ★ 글의 흐름·목적 파악 유형</div>
+        </div>
+      </div>
+
+      <!-- S12 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑫</div>
+        <div class="sentence-eng">If the price of the pen was $0.10, then the notebook would cost $1.10.</div>
+        <div class="slash-reading">If the price of the pen / was $0.10, / then the notebook / would cost / $1.10.</div>
+        <div class="slash-kr">만약 펜의 가격이 / $0.10이었다면, / 그렇다면 공책은 / 가격이 될 것입니다 / $1.10이.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 가정법 과거 (If + 과거, would V)</strong> ▶ "If … was … would cost" — 현재 사실 반대 가정 ★ 가정법 시제 일치 빈출</div>
+        </div>
+      </div>
+
+      <!-- S13 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑬</div>
+        <div class="sentence-eng">That would make the total price $1.20.</div>
+        <div class="slash-reading">That / would make / the total price / $1.20.</div>
+        <div class="slash-kr">그것은 / 만들 것입니다 / 총 가격을 / $1.20으로.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 5형식 make (SVOC)</strong> ▶ "make the total price $1.20" — 목적어+목적보어(명사) ★ make 5형식 vs. 4형식 구별</div>
+        </div>
+      </div>
+
+      <!-- S14 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑭ Host</div>
+        <div class="sentence-eng">It seems like an easy question now.</div>
+        <div class="slash-reading">It seems like / an easy question / now.</div>
+        <div class="slash-kr">~처럼 보입니다 / 쉬운 질문 / 이제.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ seem like + 명사구</strong> ▶ "seems like an easy question" — like 뒤 명사 ★ seem to V / seem like N 구별</div>
+        </div>
+      </div>
+
+      <!-- S15 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑮ Doctor — 두 시스템 도입</div>
+        <div class="sentence-eng">If you pause, take your time, and carefully think about it, you will realize your mistake.</div>
+        <div class="slash-reading">If you pause, / take your time, / and carefully think about it, / you will realize / your mistake.</div>
+        <div class="slash-kr">만약 당신이 멈추고, / 시간을 갖고, / 그리고 신중하게 생각해 본다면, / 당신은 깨달을 것입니다 / 자신의 실수를.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 조건의 if절 (병렬 동사)</strong> ▶ "pause, take, and … think" — 세 동사가 if절 내 병렬 ★ 병렬 구조 대등 접속사 and</div>
+          <div class="grammar-item"><strong>◆ 조동사 will (예측)</strong> ▶ "you will realize" — 조건 충족 시 결과 ★ will vs. would 시제 구별</div>
+        </div>
+      </div>
+
+      <!-- S16 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑯</div>
+        <div class="sentence-eng">This simple question reveals the fundamental way that our brains work.</div>
+        <div class="slash-reading">This simple question / reveals / the fundamental way / that our brains work.</div>
+        <div class="slash-kr">이 간단한 질문은 / 드러냅니다 / 근본적인 방식을 / 우리의 뇌가 작동하는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 관계부사 that (= in which)</strong> ▶ "the fundamental way that our brains work" — way를 선행사로 받는 관계부사 ★ 관계부사 how와 the way that 교체 가능 여부</div>
+        </div>
+      </div>
+
+      <!-- S17 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑰</div>
+        <div class="sentence-eng">They actually have two different systems that they can utilize: System 1 and System 2.</div>
+        <div class="slash-reading">They actually have / two different systems / that they can utilize: / System 1 and System 2.</div>
+        <div class="slash-kr">우리의 뇌는 실제로 갖고 있습니다 / 두 가지 다른 시스템을 / 활용할 수 있는: / 시스템 1과 시스템 2.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 관계대명사 that (목적격)</strong> ▶ "systems that they can utilize" — 선행사 systems, 관계사 목적격 생략 가능 ★ 목적격 관계사 생략 판단</div>
+          <div class="grammar-item"><strong>◆ 콜론(:) 열거</strong> ▶ "utilize: System 1 and System 2" — 콜론 뒤 구체 항목 나열 ★ 문장 부호 기능 파악</div>
+        </div>
+      </div>
+
+      <!-- S18 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑱</div>
+        <div class="sentence-eng">System 1 is based on instinct, and it works without our conscious control.</div>
+        <div class="slash-reading">System 1 / is based on instinct, / and it works / without our conscious control.</div>
+        <div class="slash-kr">시스템 1은 / 본능에 기반합니다, / 그리고 그것은 작동합니다 / 우리의 의식적 통제 없이.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ be based on (수동태 관용구)</strong> ▶ "is based on instinct" — 전치사 on 고정 ★ be based on/in/at 전치사 선택 오답</div>
+          <div class="grammar-item"><strong>◆ without + 명사구 (전치사구 부사)</strong> ▶ "without our conscious control" ★ without -ing 형태와 혼동</div>
+        </div>
+      </div>
+
+      <!-- S19 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑲</div>
+        <div class="sentence-eng">Our brains naturally apply this system in countless everyday situations, such as when we hear simple sentences, see large words on advertisements, or encounter easy questions like "2+2=?".</div>
+        <div class="slash-reading">Our brains naturally apply / this system / in countless everyday situations, / such as / when we hear simple sentences, / see large words on advertisements, / or encounter easy questions / like "2+2=?".</div>
+        <div class="slash-kr">우리의 뇌는 자연스럽게 적용합니다 / 이 시스템을 / 수많은 일상 상황에서, / 예를 들어 / 우리가 단순한 문장을 들을 때, / 광고에서 큰 글자를 볼 때, / 또는 쉬운 질문을 만날 때 / "2+2=?"와 같은.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ such as (예시)</strong> ▶ "in countless situations, such as when …" — 구체 사례 도입 ★ such as vs. for example 위치 차이</div>
+          <div class="grammar-item"><strong>◆ 병렬 구조 (when절 세 개)</strong> ▶ "when we hear … see … or encounter" — when 절 동사 병렬 ★ 접속사 대등 연결</div>
+        </div>
+      </div>
+
+      <!-- S20 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">⑳</div>
+        <div class="sentence-eng">This system works very quickly, because it needs to continuously process enormous amounts of information coming in through our senses.</div>
+        <div class="slash-reading">This system works very quickly, / because it needs / to continuously process / enormous amounts of information / coming in through our senses.</div>
+        <div class="slash-kr">이 시스템은 매우 빠르게 작동합니다, / 왜냐하면 그것은 필요하기 때문입니다 / 지속적으로 처리해야 할 / 엄청난 양의 정보를 / 우리의 감각을 통해 들어오는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 현재분사구 후치수식</strong> ▶ "information coming in through our senses" — 명사 뒤 분사구 수식 ★ 현재분사 vs. 과거분사 선택</div>
+          <div class="grammar-item"><strong>◆ need to V</strong> ▶ "needs to continuously process" — 분리부정사(split infinitive) ★ 부사 위치 판단</div>
+        </div>
+      </div>
+
+      <!-- S21 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉑</div>
+        <div class="sentence-eng">If you initially came up with the answer "$0.10" to the question I asked earlier, that was the automatic response of System 1.</div>
+        <div class="slash-reading">If you initially came up with / the answer "$0.10" / to the question / I asked earlier, / that was / the automatic response of System 1.</div>
+        <div class="slash-kr">만약 처음에 당신이 떠올렸다면 / "$0.10"이라는 답을 / 질문에 대한 / 제가 아까 물었던, / 그것은 / 시스템 1의 자동 반응이었습니다.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 구동사 come up with</strong> ▶ "came up with the answer" — '생각해 내다' 의미 ★ 목적어 위치 / 수동태 전환</div>
+          <div class="grammar-item"><strong>◆ 목적격 관계대명사 생략</strong> ▶ "the question (that) I asked" — 접촉절 ★ 생략 가능 조건 판단</div>
+        </div>
+      </div>
+
+      <!-- S22 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉒ Host — System 2 질문</div>
+        <div class="sentence-eng">That is fascinating! So if System 1 produces these rapid, automatic responses to situations we regularly encounter in daily life, what is the role of System 2?</div>
+        <div class="slash-reading">That is fascinating! / So if System 1 produces / these rapid, automatic responses / to situations / we regularly encounter / in daily life, / what is the role of System 2?</div>
+        <div class="slash-kr">정말 흥미롭군요! / 그렇다면 시스템 1이 만들어낸다면 / 이 빠르고 자동적인 반응들을 / 상황들에 / 우리가 일상에서 정기적으로 마주치는, / 시스템 2의 역할은 무엇입니까?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 형용사 fascinating</strong> ▶ "That is fascinating" — 사물 주어에 -ing형 감정형용사 ★ fascinating vs. fascinated 구별</div>
+          <div class="grammar-item"><strong>◆ 목적격 관계대명사 생략 (접촉절)</strong> ▶ "situations (that) we regularly encounter" ★ 수능 어법 빈출</div>
+        </div>
+      </div>
+
+      <!-- S23 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉓ Doctor — System 2 설명</div>
+        <div class="sentence-eng">System 2 is responsible for our reasoning and deeper decision-making processes.</div>
+        <div class="slash-reading">System 2 / is responsible for / our reasoning / and deeper decision-making processes.</div>
+        <div class="slash-kr">시스템 2는 / 책임집니다 / 우리의 추론과 / 더 깊은 의사결정 과정을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ be responsible for (전치사 관용구)</strong> ▶ 전치사 for 고정 ★ responsible to/for 혼동 오답</div>
+        </div>
+      </div>
+
+      <!-- S24 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉔</div>
+        <div class="sentence-eng">Our brains use this system when we compare the prices and features of products, check the validity of an argument, or encounter difficult questions like "238×79×451=?".</div>
+        <div class="slash-reading">Our brains use this system / when we compare / the prices and features of products, / check the validity of an argument, / or encounter difficult questions / like "238×79×451=?".</div>
+        <div class="slash-kr">우리의 뇌는 이 시스템을 사용합니다 / 우리가 비교할 때 / 제품의 가격과 특징을, / 논증의 타당성을 점검하거나, / 또는 어려운 질문을 마주칠 때 / "238×79×451=?"와 같은.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ when절 내 동사 병렬 (compare / check / encounter)</strong> ▶ 세 동사 원형 등위 접속 ★ 병렬 오류 찾기 유형</div>
+        </div>
+      </div>
+
+      <!-- S25 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉕</div>
+        <div class="sentence-eng">It controls conscious mental activities when we need to focus or make careful choices.</div>
+        <div class="slash-reading">It controls / conscious mental activities / when we need / to focus / or make careful choices.</div>
+        <div class="slash-kr">그것은 통제합니다 / 의식적인 정신 활동을 / 우리가 필요할 때 / 집중하거나 / 신중한 선택을 해야 하는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ need to V 병렬 (to focus or make)</strong> ▶ "need to focus or make" — to 공유 병렬 ★ to 반복 여부 판단</div>
+        </div>
+      </div>
+
+      <!-- S26 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉖</div>
+        <div class="sentence-eng">However, while System 2 is more reliable, its application requires time and effort.</div>
+        <div class="slash-reading">However, / while System 2 is more reliable, / its application / requires / time and effort.</div>
+        <div class="slash-kr">그러나, / 시스템 2가 더 신뢰할 만하지만, / 그것의 적용은 / 필요로 합니다 / 시간과 노력을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ while (양보 접속사)</strong> ▶ "while System 2 is more reliable" — '비록 ~이지만' ★ while 시간 vs. 양보 의미 구별</div>
+          <div class="grammar-item"><strong>◆ 비교급 more reliable</strong> ▶ reliable의 비교급 형성 — 2음절 이상 more 사용 ★ -er 불규칙 비교급과 혼동</div>
+        </div>
+      </div>
+
+      <!-- S27 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉗</div>
+        <div class="sentence-eng">If you got the right answer to the notebook and pen question after taking a few seconds to reflect, then your brain used System 2 to check System 1's initial response.</div>
+        <div class="slash-reading">If you got the right answer / to the notebook and pen question / after taking a few seconds / to reflect, / then your brain used System 2 / to check System 1's initial response.</div>
+        <div class="slash-kr">만약 당신이 올바른 답을 얻었다면 / 공책과 펜 문제에 대한 / 몇 초 동안 / 생각한 후, / 그렇다면 당신의 뇌는 시스템 2를 사용한 것입니다 / 시스템 1의 초기 반응을 점검하기 위해.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ after + 동명사 (시간 전치사)</strong> ▶ "after taking a few seconds" ★ after -ing vs. after S+V절</div>
+          <div class="grammar-item"><strong>◆ to부정사 목적 (to check)</strong> ▶ "used System 2 to check" — 목적의 부사적 용법 ★ in order to로 바꿔 쓰기</div>
+        </div>
+      </div>
+
+      <!-- S28 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉘</div>
+        <div class="sentence-eng">However, our brains tend to rely heavily on taking mental shortcuts with System 1.</div>
+        <div class="slash-reading">However, / our brains tend / to rely heavily on / taking mental shortcuts / with System 1.</div>
+        <div class="slash-kr">그러나, / 우리의 뇌는 경향이 있습니다 / 지나치게 의존하는 / 정신적 지름길을 택하는 것에 / 시스템 1로.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ tend to V</strong> ▶ "tend to rely" — '~하는 경향이 있다' ★ tend to vs. be used to -ing 혼동</div>
+          <div class="grammar-item"><strong>◆ rely on + 동명사</strong> ▶ "rely heavily on taking" — 전치사 on 뒤 동명사 ★ 전치사 뒤 to V 오류 빈출</div>
+        </div>
+      </div>
+
+      <!-- S29 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉙</div>
+        <div class="sentence-eng">That is why it's common for people to answer the question incorrectly at first.</div>
+        <div class="slash-reading">That is why / it's common / for people / to answer the question incorrectly / at first.</div>
+        <div class="slash-kr">그것이 이유입니다 / ~하는 것이 흔한 / 사람들에게 / 처음에 잘못 대답하는 것이 / 처음에는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ That is why + 결과절</strong> ▶ "That is why it's common" — 원인-결과 표현 ★ That is why vs. That is because 구별</div>
+          <div class="grammar-item"><strong>◆ 가주어-진주어 (for people to V)</strong> ▶ "it's common for people to answer" — 의미상 주어 for ★ 수능 필수 구문</div>
+        </div>
+      </div>
+
+      <!-- S30 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉚ Host — 왜 System 1에 의존?</div>
+        <div class="sentence-eng">So, Doctor, why do we rely on these mental shortcuts when System 1 is not as dependable as System 2?</div>
+        <div class="slash-reading">So, Doctor, / why do we rely on / these mental shortcuts / when System 1 / is not as dependable as System 2?</div>
+        <div class="slash-kr">그렇다면, 박사님, / 왜 우리는 의존합니까 / 이 정신적 지름길에 / 시스템 1이 / 시스템 2만큼 믿을 만하지 않을 때?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 원급 비교 not as ~ as</strong> ▶ "not as dependable as System 2" — 열등 비교 ★ as ~ as / not as ~ as / less ~ than 교체</div>
+        </div>
+      </div>
+
+      <!-- S31 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉛ Doctor — 35,000 결정</div>
+        <div class="sentence-eng">Well, we make about 35,000 decisions every day without realizing it, and it is impossible to make every one of these consciously.</div>
+        <div class="slash-reading">Well, / we make about 35,000 decisions / every day / without realizing it, / and it is impossible / to make every one of these / consciously.</div>
+        <div class="slash-kr">자, / 우리는 약 35,000개의 결정을 합니다 / 매일 / 깨닫지 못한 채로, / 그리고 불가능합니다 / 이것들 하나하나를 다 / 의식적으로 하는 것은.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ without + 동명사 (부대상황)</strong> ▶ "without realizing it" ★ while -ing vs. without -ing 의미 차이</div>
+          <div class="grammar-item"><strong>◆ 가주어-진주어 it ~ to V</strong> ▶ "it is impossible to make every one" ★ 형용사 종류별 진주어 패턴</div>
+        </div>
+      </div>
+
+      <!-- S32 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉜</div>
+        <div class="sentence-eng">So it's quite reasonable and effective for the brain to be a bit lazy sometimes.</div>
+        <div class="slash-reading">So / it's quite reasonable and effective / for the brain / to be a bit lazy / sometimes.</div>
+        <div class="slash-kr">그래서 / 꽤 합리적이고 효과적입니다 / 뇌에게는 / 약간 게으른 것이 / 때로는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 가주어-진주어 (형용사 2개 병렬)</strong> ▶ "reasonable and effective for the brain to be" ★ 형용사 병렬 구조</div>
+        </div>
+      </div>
+
+      <!-- S33 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉝</div>
+        <div class="sentence-eng">Having a lazy brain allows us to save energy for critical tasks that require our focus and attention.</div>
+        <div class="slash-reading">Having a lazy brain / allows us / to save energy / for critical tasks / that require our focus and attention.</div>
+        <div class="slash-kr">게으른 뇌를 갖는 것은 / 허락합니다 우리가 / 에너지를 아끼도록 / 중요한 과제들을 위해 / 우리의 집중과 주의를 필요로 하는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 동명사 주어</strong> ▶ "Having a lazy brain allows" — 동명사구 주어 단수 취급 ★ 주어-동사 수 일치</div>
+          <div class="grammar-item"><strong>◆ allow + 목적어 + to V (5형식)</strong> ▶ "allows us to save" ★ allow/enable/permit 5형식 패턴</div>
+        </div>
+      </div>
+
+      <!-- S34 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉞</div>
+        <div class="sentence-eng">However, it is dangerous when this becomes a habit.</div>
+        <div class="slash-reading">However, / it is dangerous / when this becomes a habit.</div>
+        <div class="slash-kr">그러나, / 그것은 위험합니다 / 이것이 습관이 될 때.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 가주어 it (when절이 진주어 역할)</strong> ▶ "it is dangerous when" — when절 전체가 실질 주어 ★ 형식주어 it 다양한 용법</div>
+        </div>
+      </div>
+
+      <!-- S35 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㉟</div>
+        <div class="sentence-eng">If your brain becomes too reliant on System 1, it will not be able to apply System 2 when you confront a problem that requires intense concentration.</div>
+        <div class="slash-reading">If your brain becomes / too reliant on System 1, / it will not be able to apply System 2 / when you confront / a problem / that requires intense concentration.</div>
+        <div class="slash-kr">만약 당신의 뇌가 / 시스템 1에 지나치게 의존하게 된다면, / 시스템 2를 적용할 수 없게 될 것입니다 / 당신이 직면할 때 / 문제를 / 강도 높은 집중을 요구하는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ be able to V (조동사 표현)</strong> ▶ "will not be able to apply" — will + be able to 결합 ★ can vs. be able to 미래 표현</div>
+          <div class="grammar-item"><strong>◆ 관계대명사 that (주격)</strong> ▶ "a problem that requires" ★ 주격 관계사 that/which 선택</div>
+        </div>
+      </div>
+
+      <!-- S36 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊱</div>
+        <div class="sentence-eng">System 2 is essential for exercising human intelligence, so the less you use it, the more likely you are to become a lazy thinker.</div>
+        <div class="slash-reading">System 2 is essential / for exercising human intelligence, / so the less you use it, / the more likely you are / to become a lazy thinker.</div>
+        <div class="slash-kr">시스템 2는 필수적입니다 / 인간의 지능을 발휘하는 데, / 그래서 덜 사용할수록, / 더 될 가능성이 높습니다 / 게으른 사상가가.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ The 비교급 ~, the 비교급 …</strong> ▶ "the less … the more likely" — '~할수록 더 …하다' ★ 수능 최빈출 구문, 어순 주의</div>
+          <div class="grammar-item"><strong>◆ be essential for + 동명사</strong> ▶ "essential for exercising" — 전치사 for ★ essential to/for 혼동</div>
+        </div>
+      </div>
+
+      <!-- S37 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊲</div>
+        <div class="sentence-eng">Those who have an overly lazy brain frequently make errors and bad decisions.</div>
+        <div class="slash-reading">Those who have / an overly lazy brain / frequently make / errors and bad decisions.</div>
+        <div class="slash-kr">지나치게 게으른 뇌를 가진 / 사람들은 / 자주 합니다 / 오류와 잘못된 결정을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 주격 관계대명사 who</strong> ▶ "Those who have" — those 선행사, 사람 ★ those who = people who</div>
+        </div>
+      </div>
+
+      <!-- S38 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊳</div>
+        <div class="sentence-eng">They can also develop a habit of accepting things to be true even though they have never been proven.</div>
+        <div class="slash-reading">They can also develop / a habit / of accepting things to be true / even though / they have never been proven.</div>
+        <div class="slash-kr">그들은 또한 형성할 수 있습니다 / 습관을 / 사물을 사실로 받아들이는 / 비록 / 그것들이 증명된 적이 없더라도.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ even though (양보 접속사)</strong> ▶ "even though they have never been proven" ★ even though vs. even if 사실/가정 구별</div>
+          <div class="grammar-item"><strong>◆ 현재완료 수동 (have been proven)</strong> ▶ '지금까지 증명된 적 없다' 경험 부정 ★ 시제 일치 + 수동 형태</div>
+        </div>
+      </div>
+
+      <!-- S39 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊴</div>
+        <div class="sentence-eng">Therefore, it can be harmful to develop lazy brain habits.</div>
+        <div class="slash-reading">Therefore, / it can be harmful / to develop lazy brain habits.</div>
+        <div class="slash-kr">따라서, / 해로울 수 있습니다 / 게으른 뇌 습관을 기르는 것은.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 가주어-진주어 it ~ to V</strong> ▶ "it can be harmful to develop" ★ 가주어 반복 확인, 시험 단골</div>
+        </div>
+      </div>
+
+      <!-- S40 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊵ Host — 해결책 질문</div>
+        <div class="sentence-eng">So how can we resist these lazy brain habits?</div>
+        <div class="slash-reading">So / how can we resist / these lazy brain habits?</div>
+        <div class="slash-kr">그렇다면 / 어떻게 우리는 저항할 수 있을까요 / 이 게으른 뇌 습관에?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 의문사 how 직접의문문</strong> ▶ "how can we resist" — 조동사+주어 도치 ★ 직접 vs. 간접의문문 어순</div>
+        </div>
+      </div>
+
+      <!-- S41 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊶ Doctor — 팁 1</div>
+        <div class="sentence-eng">We can make a deliberate effort to practice thinking deeply with System 2 more often.</div>
+        <div class="slash-reading">We can make / a deliberate effort / to practice / thinking deeply / with System 2 / more often.</div>
+        <div class="slash-kr">우리는 할 수 있습니다 / 의도적인 노력을 / 연습하기 위한 / 깊이 생각하는 것을 / 시스템 2로 / 더 자주.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ make an effort to V</strong> ▶ "make a deliberate effort to practice" — 관용 표현 ★ make 뒤 명사구 + to부정사 수식</div>
+          <div class="grammar-item"><strong>◆ practice + 동명사 (목적어)</strong> ▶ "practice thinking deeply" — practice는 동명사 목적어 취함 ★ practice vs. plan to V 비교</div>
+        </div>
+      </div>
+
+      <!-- S42 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊷</div>
+        <div class="sentence-eng">First, reconsider your initial thoughts instead of accepting them right away.</div>
+        <div class="slash-reading">First, / reconsider your initial thoughts / instead of accepting them / right away.</div>
+        <div class="slash-kr">첫째, / 처음 생각을 재고하세요 / 그것들을 받아들이는 대신 / 바로.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ instead of + 동명사</strong> ▶ "instead of accepting them" — 전치사 of 뒤 동명사 ★ instead of vs. instead to 오류</div>
+        </div>
+      </div>
+
+      <!-- S43 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊸</div>
+        <div class="sentence-eng">Keep generating more ideas and carefully compare the available options before making a decision.</div>
+        <div class="slash-reading">Keep generating more ideas / and carefully compare / the available options / before making a decision.</div>
+        <div class="slash-kr">계속해서 더 많은 아이디어를 생성하고 / 신중하게 비교하세요 / 가능한 선택지들을 / 결정하기 전에.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ keep + 동명사 (계속)</strong> ▶ "Keep generating" — keep은 동명사 목적어 ★ keep to V 오류 주의</div>
+          <div class="grammar-item"><strong>◆ before + 동명사 (시간 전치사)</strong> ▶ "before making a decision" ★ before -ing vs. before S+V</div>
+        </div>
+      </div>
+
+      <!-- S44 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊹</div>
+        <div class="sentence-eng">Ask yourself if the information you have gathered supports your original conclusion.</div>
+        <div class="slash-reading">Ask yourself / if the information / you have gathered / supports your original conclusion.</div>
+        <div class="slash-kr">자신에게 물어보세요 / 그 정보가 / 당신이 수집한 / 당신의 원래 결론을 지지하는지를.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ if절 명사절 (동사의 목적어)</strong> ▶ "Ask yourself if … supports" — whether와 교체 가능 ★ if vs. whether 명사절 용법</div>
+          <div class="grammar-item"><strong>◆ 현재완료 you have gathered</strong> ▶ 결과: '지금까지 수집해온' ★ 현재완료 vs. 단순과거 구별</div>
+        </div>
+      </div>
+
+      <!-- S45 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊺</div>
+        <div class="sentence-eng">Next, make use of your natural curiosity.</div>
+        <div class="slash-reading">Next, / make use of / your natural curiosity.</div>
+        <div class="slash-kr">다음으로, / 활용하세요 / 여러분의 자연스러운 호기심을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ make use of (관용 표현)</strong> ▶ = utilize ★ make use of / take advantage of / take use of 혼동</div>
+        </div>
+      </div>
+
+      <!-- S46 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊻</div>
+        <div class="sentence-eng">Curiosity can motivate us to investigate unfamiliar topics and ideas.</div>
+        <div class="slash-reading">Curiosity / can motivate us / to investigate / unfamiliar topics and ideas.</div>
+        <div class="slash-kr">호기심은 / 우리에게 동기를 줄 수 있습니다 / 탐구하도록 / 낯선 주제와 아이디어를.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ motivate + 목적어 + to V (5형식)</strong> ▶ "motivate us to investigate" ★ motivate/encourage/enable + O + to V 5형식</div>
+        </div>
+      </div>
+
+      <!-- S47 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊼</div>
+        <div class="sentence-eng">It encourages us to dive deeper into a subject and explore it from multiple angles.</div>
+        <div class="slash-reading">It encourages us / to dive deeper into a subject / and explore it / from multiple angles.</div>
+        <div class="slash-kr">그것은 우리를 장려합니다 / 주제 속으로 더 깊이 파고들도록 / 그리고 그것을 탐색하도록 / 다양한 각도에서.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ encourage + 목적어 + to V 병렬</strong> ▶ "to dive … and explore" — to 공유 ★ 5형식 병렬 구조</div>
+          <div class="grammar-item"><strong>◆ 비교급 deeper (부사)</strong> ▶ "dive deeper" — deep의 비교급 부사 ★ deeper vs. more deeply</div>
+        </div>
+      </div>
+
+      <!-- S48 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊽</div>
+        <div class="sentence-eng">Therefore, it can serve as a foundation for building deeper thinking habits.</div>
+        <div class="slash-reading">Therefore, / it can serve / as a foundation / for building deeper thinking habits.</div>
+        <div class="slash-kr">따라서, / 그것은 역할을 할 수 있습니다 / 토대로서 / 더 깊은 사고 습관을 기르기 위한.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ serve as + 명사 (기능 표현)</strong> ▶ "serve as a foundation" ★ serve as vs. serve for 전치사 구별</div>
+        </div>
+      </div>
+
+      <!-- S49 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊾</div>
+        <div class="sentence-eng">Finally, learn something new in order to stimulate your brain and become more intelligent.</div>
+        <div class="slash-reading">Finally, / learn something new / in order to stimulate your brain / and become more intelligent.</div>
+        <div class="slash-kr">마지막으로, / 새로운 무언가를 배우세요 / 뇌를 자극하기 위해 / 그리고 더 똑똑해지기 위해.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ in order to V (목적)</strong> ▶ "in order to stimulate … and become" — to 공유 병렬 ★ in order to vs. so as to</div>
+        </div>
+      </div>
+
+      <!-- S50 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">㊿</div>
+        <div class="sentence-eng">Learning a language or a musical instrument might not be easy, but these new activities will create new paths that allow information to flow through your brain more efficiently.</div>
+        <div class="slash-reading">Learning a language or a musical instrument / might not be easy, / but these new activities / will create new paths / that allow information / to flow through your brain / more efficiently.</div>
+        <div class="slash-kr">언어나 악기를 배우는 것은 / 쉽지 않을 수 있습니다, / 하지만 이 새로운 활동들은 / 새로운 경로를 만들 것입니다 / 정보가 흐르도록 허락하는 / 당신의 뇌를 통해 / 더 효율적으로.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ 동명사 주어 (Learning a language or …)</strong> ▶ 동명사구 주어 단수 취급 ★ 주어-동사 수 일치</div>
+          <div class="grammar-item"><strong>◆ 관계대명사 that 주격 + allow + 목적어 + to V</strong> ▶ "paths that allow information to flow" ★ 관계사+5형식 복합 구조</div>
+        </div>
+      </div>
+
+      <!-- S51 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">51 Host — 마무리 질문</div>
+        <div class="sentence-eng">That sounds like excellent advice, Doctor. Do you have any final words for our audience?</div>
+        <div class="slash-reading">That sounds like / excellent advice, Doctor. / Do you have / any final words / for our audience?</div>
+        <div class="slash-kr">훌륭한 조언처럼 들립니다, 박사님. / 갖고 계십니까 / 마지막으로 하실 말씀이 / 청중을 위해?</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ sound like + 명사구 (감각동사)</strong> ▶ "sounds like excellent advice" ★ sound/look/feel like + 명사구</div>
+        </div>
+      </div>
+
+      <!-- S52 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">52 Doctor — 마지막 조언</div>
+        <div class="sentence-eng">We are creatures of habit, so it is vitally important that we develop well-balanced thinking habits.</div>
+        <div class="slash-reading">We are creatures of habit, / so it is vitally important / that we develop / well-balanced thinking habits.</div>
+        <div class="slash-kr">우리는 습관의 동물입니다, / 그래서 매우 중요합니다 / 우리가 발전시키는 것이 / 균형 잡힌 사고 습관을.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ It is important that + S + (should) V</strong> ▶ "it is vitally important that we develop" — 당위 that절 가정법 현재 ★ should 생략 여부 판단</div>
+        </div>
+      </div>
+
+      <!-- S53 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">53</div>
+        <div class="sentence-eng">We should remain alert so that we do not fall into the trap of making careless decisions.</div>
+        <div class="slash-reading">We should remain alert / so that / we do not fall into / the trap / of making careless decisions.</div>
+        <div class="slash-kr">우리는 경계를 유지해야 합니다 / ~하기 위해 / 우리가 빠지지 않도록 / 함정에 / 부주의한 결정을 내리는.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ so that + S + can/will/do V (목적)</strong> ▶ "so that we do not fall into" ★ so that (목적) vs. so (결과) 구별</div>
+          <div class="grammar-item"><strong>◆ remain + 형용사 (2형식)</strong> ▶ "remain alert" ★ remain/stay/become + 형용사 보어</div>
+        </div>
+      </div>
+
+      <!-- S54 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">54</div>
+        <div class="sentence-eng">We should invest time into learning how to think deeply in order to use both System 1 and System 2 harmoniously.</div>
+        <div class="slash-reading">We should invest time / into learning / how to think deeply / in order to use / both System 1 and System 2 / harmoniously.</div>
+        <div class="slash-kr">우리는 시간을 투자해야 합니다 / 배우는 데 / 깊이 생각하는 방법을 / 사용하기 위해 / 시스템 1과 시스템 2 모두를 / 조화롭게.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ invest A into B (관용 표현)</strong> ▶ "invest time into learning" ★ invest in vs. invest into</div>
+          <div class="grammar-item"><strong>◆ how to V (의문사+to부정사)</strong> ▶ "how to think deeply" — 명사구 역할 ★ how to / what to / when to 구별</div>
+          <div class="grammar-item"><strong>◆ both A and B (상관접속사)</strong> ▶ "both System 1 and System 2" — 두 요소 동등 연결 ★ both/either/neither 구별</div>
+        </div>
+      </div>
+
+      <!-- S55 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">55</div>
+        <div class="sentence-eng">That way, instead of developing a habit of relying too much on a lazy brain, you can exercise your intelligence and reinforce your mental capabilities.</div>
+        <div class="slash-reading">That way, / instead of developing a habit / of relying too much on a lazy brain, / you can exercise your intelligence / and reinforce your mental capabilities.</div>
+        <div class="slash-kr">그런 식으로, / 습관을 기르는 대신 / 게으른 뇌에 지나치게 의존하는, / 당신은 지능을 발휘할 수 있습니다 / 그리고 정신적 능력을 강화할 수 있습니다.</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ instead of + 동명사구 (삽입)</strong> ▶ "instead of developing a habit of relying" — 중첩 전치사+동명사 ★ of relying = 동격의 of</div>
+          <div class="grammar-item"><strong>◆ 동격의 of</strong> ▶ "a habit of relying" — habit의 내용을 of 이하가 설명 ★ 동격 of vs. 소유격 of</div>
+        </div>
+      </div>
+
+      <!-- S56 -->
+      <div class="sentence-block">
+        <div class="sentence-num-bar">56 Host — 마무리</div>
+        <div class="sentence-eng">Okay, Dr. Yoon. Thanks for the great advice! Please give her a big hand!</div>
+        <div class="slash-reading">Okay, Dr. Yoon. / Thanks for the great advice! / Please give her / a big hand!</div>
+        <div class="slash-kr">알겠습니다, Yoon 박사님. / 훌륭한 조언 감사합니다! / 그녀에게 / 큰 박수를 보내주세요!</div>
+        <div class="grammar-bullets">
+          <div class="grammar-item"><strong>◆ Thanks for + 동명사/명사 (관용 표현)</strong> ▶ "Thanks for the great advice" ★ Thank you for vs. Thanks for 문어/구어 차이</div>
+          <div class="grammar-item"><strong>◆ give + 간접목적어 + 직접목적어 (SVOO)</strong> ▶ "give her a big hand" — a big hand = 박수 (관용어) ★ 4형식 → 3형식 전환</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ③ 핵심단어 -->
+    <section id="s2" class="section">
+      <div class="sec-header">
+        <div class="sec-num">03</div>
+        <div>
+          <div class="sec-title">핵심단어 및 표현</div>
+          <div class="sec-subtitle">수능·내신 빈출 어휘 15선</div>
+        </div>
+      </div>
+
+      <div class="vocab-item"><span class="vocab-word">instinct</span><span class="vocab-kr">본능</span><span class="vocab-pos">n.</span><span class="vocab-deriv">instinctive (adj.), instinctively (adv.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">conscious</span><span class="vocab-kr">의식적인</span><span class="vocab-pos">adj.</span><span class="vocab-deriv">consciousness (n.), unconscious (adj.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">utilize</span><span class="vocab-kr">활용하다, 이용하다</span><span class="vocab-pos">v.</span><span class="vocab-deriv">utilization (n.), utility (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">encounter</span><span class="vocab-kr">마주치다, 직면하다</span><span class="vocab-pos">v./n.</span><span class="vocab-deriv">—</span></div>
+      <div class="vocab-item"><span class="vocab-word">fundamental</span><span class="vocab-kr">근본적인, 기본적인</span><span class="vocab-pos">adj.</span><span class="vocab-deriv">fundamentally (adv.), fundamentals (n.pl.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">validity</span><span class="vocab-kr">타당성, 유효성</span><span class="vocab-pos">n.</span><span class="vocab-deriv">valid (adj.), validate (v.), invalid (adj.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">reliable</span><span class="vocab-kr">신뢰할 수 있는, 믿을 만한</span><span class="vocab-pos">adj.</span><span class="vocab-deriv">reliability (n.), rely (v.), reliance (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">deliberate</span><span class="vocab-kr">의도적인, 신중한</span><span class="vocab-pos">adj./v.</span><span class="vocab-deriv">deliberately (adv.), deliberation (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">curiosity</span><span class="vocab-kr">호기심</span><span class="vocab-pos">n.</span><span class="vocab-deriv">curious (adj.), curiously (adv.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">investigate</span><span class="vocab-kr">탐구하다, 조사하다</span><span class="vocab-pos">v.</span><span class="vocab-deriv">investigation (n.), investigator (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">stimulate</span><span class="vocab-kr">자극하다, 활성화하다</span><span class="vocab-pos">v.</span><span class="vocab-deriv">stimulation (n.), stimulus (n.), stimulating (adj.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">reinforce</span><span class="vocab-kr">강화하다</span><span class="vocab-pos">v.</span><span class="vocab-deriv">reinforcement (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">harmoniously</span><span class="vocab-kr">조화롭게</span><span class="vocab-pos">adv.</span><span class="vocab-deriv">harmony (n.), harmonious (adj.), harmonize (v.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">confront</span><span class="vocab-kr">직면하다, 맞서다</span><span class="vocab-pos">v.</span><span class="vocab-deriv">confrontation (n.)</span></div>
+      <div class="vocab-item"><span class="vocab-word">capability</span><span class="vocab-kr">능력, 역량</span><span class="vocab-pos">n.</span><span class="vocab-deriv">capable (adj.), capably (adv.)</span></div>
+    </section>
+
+    <!-- ④ 전문해석 -->
+    <section id="s3" class="section">
+      <div class="sec-header">
+        <div class="sec-num">04</div>
+        <div>
+          <div class="sec-title">전문해석</div>
+          <div class="sec-subtitle">자연스러운 한국어 의역</div>
+        </div>
+      </div>
+      <div class="translation-box">
+        <p>진행자: 안녕하세요, 여러분! '사이언스 리포트'에 오신 것을 환영합니다. 저는 진행자 Alvin Stuart입니다. 우리가 몸을 단련하는 것이 얼마나 중요한지는 모두 잘 알고 있죠. 그런데 우리의 뇌는 어떨까요? 마음을 단련하는 것 역시 중요하다는 사실, 알고 계셨나요? 오늘은 Central University 신경과학과 교수이신 Dr. Caitlin Yoon 박사님을 모시고, 어떻게 하면 더 나은 사고력을 기를 수 있는지 이야기 나눠 보겠습니다. 함께해 주셔서 감사합니다, Yoon 박사님!</p>
+        <p>박사: 초대해 주셔서 감사합니다.</p>
+        <p>진행자: 박사님, 더 나은 사상가가 되는 비결은 무엇인가요?</p>
+        <p>박사: 우선 청중 여러분께 질문 하나 드리겠습니다. 어떤 가게에 들어가 공책과 펜을 구매한다고 가정해 보세요. 총 가격은 $1.10이고, 공책이 펜보다 $1 더 비쌉니다. 펜의 가격은 얼마일까요? "$0.10"이 가장 먼저 떠오르신 분은 손을 들어 주세요.</p>
+        <p>진행자: 저도 그게 먼저 떠올랐는데요.</p>
+        <p>박사: 정답은 "$0.05"입니다. 다시 생각해 보세요. 계산에서 어디가 틀렸는지 보이시나요? 펜이 $0.10이라면 공책은 $1.10이 되고, 총합은 $1.20이 되어 버리죠.</p>
+        <p>진행자: 이제 보니 쉬운 문제네요.</p>
+        <p>박사: 잠시 멈추고 천천히 신중하게 생각하면 실수를 깨달을 수 있습니다. 이 간단한 문제가 우리 뇌가 작동하는 근본적인 방식을 보여 줍니다. 우리 뇌는 사실 두 가지 시스템을 사용할 수 있습니다. 바로 시스템 1과 시스템 2인데요. 시스템 1은 본능에 기반하며 의식적인 통제 없이 작동합니다. 단순한 문장을 듣거나, 광고에서 큰 글씨를 보거나, "2+2=?"와 같은 쉬운 질문을 마주칠 때처럼 수많은 일상 상황에서 자연스럽게 적용됩니다. 감각을 통해 들어오는 방대한 양의 정보를 끊임없이 처리해야 하기 때문에 매우 빠르게 작동하죠. 아까 제가 낸 문제에서 "$0.10"이라고 답하셨다면, 그것이 바로 시스템 1의 자동 반응입니다.</p>
+        <p>진행자: 정말 흥미롭네요! 시스템 1이 일상에서 자주 마주치는 상황에 대해 빠르고 자동적인 반응을 생성한다면, 시스템 2의 역할은 무엇인가요?</p>
+        <p>박사: 시스템 2는 추론과 더 깊은 의사결정 과정을 담당합니다. 제품의 가격과 기능을 비교하거나, 논증의 타당성을 점검하거나, "238×79×451=?"과 같은 어려운 문제를 풀 때 이 시스템이 작동합니다. 집중하거나 신중한 선택을 해야 할 때 의식적인 정신 활동을 통제하죠. 하지만 시스템 2가 더 신뢰할 만하긴 해도, 적용하는 데는 시간과 노력이 필요합니다. 공책과 펜 문제에서 몇 초 더 생각한 끝에 정답을 맞히셨다면, 뇌가 시스템 2를 사용해 시스템 1의 초기 반응을 검토한 것입니다. 그러나 우리 뇌는 시스템 1을 통한 정신적 지름길에 크게 의존하는 경향이 있어서, 처음에 잘못 답하는 것이 흔한 일이죠.</p>
+        <p>진행자: 그렇다면 박사님, 시스템 1이 시스템 2만큼 믿을 만하지 않음에도 왜 우리는 이런 정신적 지름길에 의존하는 건가요?</p>
+        <p>박사: 사실 우리는 하루에 약 35,000개의 결정을 자신도 모르게 내립니다. 이것 모두를 의식적으로 처리하는 것은 불가능하죠. 그래서 뇌가 때로 약간 게을러지는 것은 꽤 합리적이고 효과적인 일입니다. 게으른 뇌 덕분에 집중력과 주의가 필요한 중요한 과제에 에너지를 아낄 수 있거든요. 그러나 이것이 습관이 되면 위험합니다. 시스템 1에 지나치게 의존하게 되면, 강도 높은 집중이 필요한 문제에 직면했을 때 시스템 2를 제대로 작동시킬 수 없게 됩니다. 시스템 2는 인간의 지능을 발휘하는 데 필수적이므로, 덜 사용할수록 게으른 사상가가 될 가능성이 높아집니다. 지나치게 게으른 뇌를 가진 사람들은 자주 실수를 하고 잘못된 결정을 내립니다. 또한 증명된 적도 없는 것들을 사실로 받아들이는 습관을 갖게 될 수도 있어요. 따라서 게으른 뇌 습관을 기르는 것은 해롭습니다.</p>
+        <p>진행자: 그렇다면 이런 게으른 뇌 습관에 어떻게 저항할 수 있을까요?</p>
+        <p>박사: 시스템 2로 깊이 생각하는 연습을 의도적으로 더 자주 해야 합니다. 몇 가지 팁을 드릴게요. 첫째, 처음 떠오른 생각을 바로 받아들이지 말고 다시 생각해 보세요. 계속해서 더 많은 아이디어를 생성하고 결정을 내리기 전에 가능한 선택지들을 신중하게 비교하세요. 수집한 정보가 처음의 결론을 뒷받침하는지 자신에게 물어보고, 그렇지 않다면 다시 생각하세요. 둘째, 자연스러운 호기심을 활용하세요. 호기심은 낯선 주제와 아이디어를 탐구하도록 동기를 부여하고, 주제를 더 깊이 파고들어 다양한 각도에서 탐색하도록 격려합니다. 따라서 더 깊은 사고 습관을 기르는 토대가 될 수 있습니다. 마지막으로, 뇌를 자극하고 더 똑똑해지기 위해 새로운 것을 배우세요. 언어나 악기를 배우는 것은 쉽지 않을 수 있지만, 이 새로운 활동들은 정보가 뇌 속을 더 효율적으로 흐를 수 있게 새로운 경로를 만들어 줄 것입니다.</p>
+        <p>진행자: 훌륭한 조언이네요, 박사님. 청중에게 마지막으로 하실 말씀이 있으신가요?</p>
+        <p>박사: 네. 우리는 습관의 동물입니다. 따라서 균형 잡힌 사고 습관을 기르는 것이 매우 중요합니다. 부주의한 결정의 함정에 빠지지 않도록 항상 경계해야 합니다. 또한 시스템 1과 시스템 2를 조화롭게 사용하기 위해 깊이 생각하는 방법을 배우는 데 시간을 투자해야 합니다. 그렇게 하면 게으른 뇌에 지나치게 의존하는 습관을 기르는 대신, 지능을 발휘하고 정신적 능력을 강화할 수 있습니다.</p>
+        <p>진행자: 알겠습니다, Yoon 박사님. 훌륭한 조언 정말 감사합니다! 박수로 감사를 표해 주세요!</p>
+      </div>
+    </section>
+
+    <!-- ⑤ 주제와 요지 -->
+    <section id="s4" class="section">
+      <div class="sec-header">
+        <div class="sec-num">05</div>
+        <div>
+          <div class="sec-title">주제와 요지</div>
+          <div class="sec-subtitle">핵심 논점 정리</div>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-title">📌 주제 (Topic)</div>
+        <div class="topic-card-body">뇌의 두 가지 사고 시스템(System 1 & 2)의 특성과 게으른 뇌 습관 극복 방법</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-title">💡 요지 (Main Idea)</div>
+        <div class="topic-card-body">
+          우리 뇌는 빠르고 직관적인 시스템 1과 느리고 신중한 시스템 2를 함께 사용하지만, 시스템 1에 과도하게 의존하는 게으른 뇌 습관은 잘못된 판단을 초래할 수 있다. 깊은 사고를 의도적으로 연습하고, 호기심을 활용하며, 새로운 학습을 통해 두 시스템을 균형 있게 사용하는 습관을 길러야 한다.
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-card-title">🔗 구조 흐름 (Structure)</div>
+        <div class="topic-card-body">
+          <div class="structure-step">
+            <span class="step-badge">도입</span>
+            <span>뇌 운동의 중요성 제기 + 공책·펜 문제를 통한 System 1의 즉각적 오류 시연</span>
+          </div>
+          <div class="structure-step">
+            <span class="step-badge">전개 1</span>
+            <span>System 1(본능적·자동)과 System 2(추론·의식적)의 특성 비교 및 역할 설명</span>
+          </div>
+          <div class="structure-step">
+            <span class="step-badge">전개 2</span>
+            <span>뇌가 System 1에 의존하는 이유와 지나친 의존이 초래하는 위험성(오류·잘못된 결정) 경고</span>
+          </div>
+          <div class="structure-step">
+            <span class="step-badge">결론</span>
+            <span>깊이 생각하기 연습·호기심 활용·새로운 학습의 3가지 해결책 제시 + 균형 잡힌 사고 습관 촉구</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ 변형문제 -->
+    <section id="s5" class="section">
+      <div class="sec-header">
+        <div class="sec-num">06</div>
+        <div>
+          <div class="sec-title">변형문제</div>
+          <div class="sec-subtitle">인터랙티브 퀴즈 + 서술형</div>
+        </div>
+      </div>
+
+      <!-- Q1 주제추론 -->
+      <div class="quiz-block">
+        <div class="quiz-q"><span class="q-num">1.</span> 다음 글의 주제로 가장 적절한 것은?<span class="quiz-type-badge">주제 추론</span></div>
+        <div class="options" id="q1-options">
+          <button class="option-btn" onclick="checkAnswer(1,1,false,'뇌의 용량이 크면 더 복잡한 문제를 풀 수 있지만, 이 글은 두 시스템의 균형에 초점을 맞춥니다.')">① 뇌의 용량이 클수록 더 복잡한 문제를 해결할 수 있다</button>
+          <button class="option-btn" onclick="checkAnswer(1,2,false,'System 1의 속도가 장점임을 다루기는 하지만, 글의 핵심 주제는 아닙니다.')">② System 1의 속도는 인간의 생존에 절대적으로 유리하다</button>
+          <button class="option-btn" onclick="checkAnswer(1,3,true,'뇌의 두 시스템을 이해하고 게으른 뇌를 극복하는 방법이 글 전체의 중심 주제입니다.')">③ 두 가지 사고 시스템의 이해와 게으른 뇌 극복 전략</button>
+          <button class="option-btn" onclick="checkAnswer(1,4,false,'교육 방식의 개혁은 이 글에서 다루지 않는 내용입니다.')">④ 교육 방식 개혁을 통한 창의적 사고 계발</button>
+          <button class="option-btn" onclick="checkAnswer(1,5,false,'의식적 결정이 무의식보다 항상 낫다는 주장은 이 글의 논지가 아닙니다.')">⑤ 의식적인 결정이 무의식적 결정보다 항상 우월하다</button>
+        </div>
+        <div class="feedback" id="q1-feedback"></div>
+        <button class="reset-btn" onclick="resetQuestion(1)">↺ 초기화</button>
+      </div>
+
+      <!-- Q2 빈칸추론 -->
+      <div class="quiz-block">
+        <div class="quiz-q"><span class="q-num">2.</span> 다음 빈칸에 들어갈 말로 가장 적절한 것은?<span class="quiz-type-badge">빈칸 추론</span><br><br>
+          <em>"System 2 is essential for exercising human intelligence, so the less you use it, the more likely you are to become a <span style="border-bottom:2px solid #1a2744;padding:0 30px;">______</span> thinker."</em>
+        </div>
+        <div class="options" id="q2-options">
+          <button class="option-btn" onclick="checkAnswer(2,1,false,'creative는 문맥과 반대되는 의미입니다.')">① creative</button>
+          <button class="option-btn" onclick="checkAnswer(2,2,false,'rational은 이 문맥에서 어울리지 않습니다.')">② rational</button>
+          <button class="option-btn" onclick="checkAnswer(2,3,true,'System 2를 덜 사용할수록 게으른(lazy) 사상가가 된다는 것이 글의 핵심 주장입니다.')">③ lazy</button>
+          <button class="option-btn" onclick="checkAnswer(2,4,false,'critical은 문맥상 적합하지 않습니다.')">④ critical</button>
+          <button class="option-btn" onclick="checkAnswer(2,5,false,'innovative는 맥락상 오답입니다.')">⑤ innovative</button>
+        </div>
+        <div class="feedback" id="q2-feedback"></div>
+        <button class="reset-btn" onclick="resetQuestion(2)">↺ 초기화</button>
+      </div>
+
+      <!-- Q3 어법 -->
+      <div class="quiz-block">
+        <div class="quiz-q"><span class="q-num">3.</span> 다음 밑줄 친 부분 중 어법상 <strong>틀린</strong> 것은?<span class="quiz-type-badge">어법 오류</span><br><br>
+          <em>
+            Having a lazy brain <u>(①allows)</u> us to save energy for critical tasks that <u>(②require)</u> our focus and attention. However, the less you use System 2, the more <u>(③likely)</u> you are to become a lazy thinker. Curiosity can motivate us <u>(④investigating)</u> unfamiliar topics and ideas. It encourages us to dive <u>(⑤deeper)</u> into a subject.
+          </em>
+        </div>
+        <div class="options" id="q3-options">
+          <button class="option-btn" onclick="checkAnswer(3,1,false,'allows는 동명사 주어 Having에 호응하는 3인칭 단수 동사로 올바릅니다.')">① allows</button>
+          <button class="option-btn" onclick="checkAnswer(3,2,false,'require는 선행사 tasks에 호응하는 복수 동사로 올바릅니다.')">② require</button>
+          <button class="option-btn" onclick="checkAnswer(3,3,false,'likely는 형용사로 be동사 뒤 보어 자리에서 올바릅니다.')">③ likely</button>
+          <button class="option-btn" onclick="checkAnswer(3,4,true,'motivate는 5형식 동사로 목적격보어에 to부정사를 취합니다. investigating → to investigate가 올바릅니다.')">④ investigating</button>
+          <button class="option-btn" onclick="checkAnswer(3,5,false,'deeper는 부사 deep의 비교급으로 dive를 수식하여 올바릅니다.')">⑤ deeper</button>
+        </div>
+        <div class="feedback" id="q3-feedback"></div>
+        <button class="reset-btn" onclick="resetQuestion(3)">↺ 초기화</button>
+      </div>
+
+      <!-- Q4 내용불일치 -->
+      <div class="quiz-block">
+        <div class="quiz-q"><span class="q-num">4.</span> 다음 글의 내용과 일치하지 <strong>않는</strong> 것은?<span class="quiz-type-badge">내용 불일치</span></div>
+        <div class="options" id="q4-options">
+          <button class="option-btn" onclick="checkAnswer(4,1,false,'System 1이 본능에 기반한다는 내용은 지문과 일치합니다.')">① System 1은 본능에 기반하며 의식적 통제 없이 작동한다.</button>
+          <button class="option-btn" onclick="checkAnswer(4,2,false,'System 2가 추론과 의사결정을 담당한다는 내용은 일치합니다.')">② System 2는 추론과 깊은 의사결정 과정을 담당한다.</button>
+          <button class="option-btn" onclick="checkAnswer(4,3,true,'지문에서 우리는 하루에 약 35,000개의 결정을 한다고 했지, 의식적으로 35,000개를 처리한다고 하지 않았습니다.')">③ 인간은 매일 35,000개의 결정을 모두 의식적으로 내릴 수 있다.</button>
+          <button class="option-btn" onclick="checkAnswer(4,4,false,'호기심이 깊은 사고의 토대가 된다는 내용은 지문과 일치합니다.')">④ 호기심은 더 깊은 사고 습관을 기르는 토대가 될 수 있다.</button>
+          <button class="option-btn" onclick="checkAnswer(4,5,false,'새로운 학습이 뇌에 새로운 경로를 만든다는 내용은 일치합니다.')">⑤ 새로운 언어나 악기 학습은 뇌에 새로운 정보 흐름 경로를 만든다.</button>
+        </div>
+        <div class="feedback" id="q4-feedback"></div>
+        <button class="reset-btn" onclick="resetQuestion(4)">↺ 초기화</button>
+      </div>
+
+      <!-- Q5 글의 순서 -->
+      <div class="quiz-block">
+        <div class="quiz-q"><span class="q-num">5.</span> 주어진 문장 다음에 이어질 글의 순서로 가장 적절한 것은?<span class="quiz-type-badge">글의 순서</span><br><br>
+          <em>"Our brains tend to rely heavily on taking mental shortcuts with System 1."</em><br><br>
+          <strong>(A)</strong> Those who have an overly lazy brain frequently make errors and bad decisions. They can also develop a habit of accepting things to be true even though they have never been proven.<br><br>
+          <strong>(B)</strong> However, it is dangerous when this becomes a habit. If your brain becomes too reliant on System 1, it will not be able to apply System 2 when you confront a problem that requires intense concentration.<br><br>
+          <strong>(C)</strong> System 2 is essential for exercising human intelligence, so the less you use it, the more likely you are to become a lazy thinker.
+        </div>
+        <div class="options" id="q5-options">
+          <button class="option-btn" onclick="checkAnswer(5,1,false,'(A)는 결과를 말하므로 원인 설명 뒤에 와야 합니다.')">① (A) - (B) - (C)</button>
+          <button class="option-btn" onclick="checkAnswer(5,2,true,'지름길 의존 → (B) 습관의 위험성 경고 → (C) 시스템 2 덜 쓸수록 게으른 사상가 → (A) 게으른 뇌의 구체적 결과 순서가 자연스럽습니다.')">② (B) - (C) - (A)</button>
+          <button class="option-btn" onclick="checkAnswer(5,3,false,'(C)가 (B) 없이 먼저 오면 맥락이 어색합니다.')">③ (C) - (A) - (B)</button>
+          <button class="option-btn" onclick="checkAnswer(5,4,false,'(A)의 구체적 결과가 먼저 올 수 없습니다.')">④ (A) - (C) - (B)</button>
+          <button class="option-btn" onclick="checkAnswer(5,5,false,'(C)와 (B)의 순서가 반대입니다.')">⑤ (C) - (B) - (A)</button>
+        </div>
+        <div class="feedback" id="q5-feedback"></div>
+        <button class="reset-btn" onclick="resetQuestion(5)">↺ 초기화</button>
+      </div>
+
+      <!-- 서술형 1 -->
+      <div class="essay-block">
+        <div class="quiz-q"><span class="q-num" style="color:var(--navy)">서술형 1.</span> 다음 빈칸을 채워 글의 핵심 내용을 완성하시오.</div>
+        <div class="essay-condition">📋 조건: 본문에서 찾아 쓰시오. (각 빈칸에 하나의 단어 또는 어구)</div>
+        <p style="font-size:0.9rem;line-height:1.9;background:#f8f8f8;padding:14px 16px;border-radius:5px;margin-bottom:12px;">
+          Our brains use two systems: System 1, which is based on <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, works automatically, while System 2, which controls <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> mental activities, requires time and effort. Over-relying on System 1 can lead to a habit of becoming a <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> thinker.
+        </p>
+        <textarea class="essay-textarea" placeholder="답안을 여기에 입력하세요..."></textarea>
+        <br>
+        <button class="show-answer-btn" onclick="toggleAnswer('essay1-answer')">📖 모범답안 보기</button>
+        <div class="model-answer" id="essay1-answer">
+          <div class="model-answer-title">✅ 모범답안</div>
+          첫 번째 빈칸: <strong>instinct</strong><br>
+          두 번째 빈칸: <strong>conscious</strong><br>
+          세 번째 빈칸: <strong>lazy</strong>
+        </div>
+      </div>
+
+      <!-- 서술형 2 -->
+      <div class="essay-block">
+        <div class="quiz-q"><span class="q-num" style="color:var(--navy)">서술형 2.</span> 다음 질문에 영어로 답하시오.</div>
+        <div class="essay-condition">📋 조건: 완전한 영어 문장으로, 30단어 내외로 작성할 것. 본문 내용을 바탕으로 할 것.</div>
+        <p style="font-size:0.88rem;color:#444;margin-bottom:12px;font-style:italic;">"According to the doctor, what are three tips to resist lazy brain habits and practice deeper thinking?"</p>
+        <textarea class="essay-textarea" placeholder="답안을 여기에 입력하세요..." style="min-height:110px;"></textarea>
+        <br>
+        <button class="show-answer-btn" onclick="toggleAnswer('essay2-answer')">📖 모범답안 보기</button>
+        <div class="model-answer" id="essay2-answer">
+          <div class="model-answer-title">✅ 모범답안</div>
+          The doctor suggests three tips: first, reconsider your initial thoughts instead of accepting them right away; next, make use of your natural curiosity to explore topics from multiple angles; finally, learn something new, such as a language or instrument, to stimulate your brain.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = ['s0','s1','s2','s3','s4','s5'].indexOf(id);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+
+const correct = { 1:3, 2:3, 3:4, 4:3, 5:2 };
+
+function checkAnswer(qNum, chosen, isCorrect, explanation) {
+  const opts = document.querySelectorAll(`#q${qNum}-options .option-btn`);
+  opts.forEach(b => b.disabled = true);
+  opts[chosen-1].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    opts[correct[qNum]-1].classList.add('reveal-correct');
+  }
+  const fb = document.getElementById(`q${qNum}-feedback`);
+  fb.textContent = (isCorrect ? '✓ 정답입니다! ' : `✗ 오답입니다. 정답은 ${correct[qNum]}번. `) + explanation;
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+}
+
+function resetQuestion(qNum) {
+  const opts = document.querySelectorAll(`#q${qNum}-options .option-btn`);
+  opts.forEach(b => { b.disabled = false; b.className = 'option-btn'; });
+  const fb = document.getElementById(`q${qNum}-feedback`);
+  fb.className = 'feedback';
+  fb.textContent = '';
+}
+
+function toggleAnswer(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+</script>
+</body>
+</html>
